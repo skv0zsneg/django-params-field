@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "django-params-field"
+version = "0.1.0"
+description = "Django extension for storing a lot of parameters in one model."
+authors = ["skv0zsneg <klimentlamonov@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

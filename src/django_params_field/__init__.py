@@ -1,3 +1,3 @@
-from params_field import ParamsField
+from .params_field import ParamsField
 
 __all__ = ("ParamsField",)

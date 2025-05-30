@@ -9,9 +9,14 @@ readme = "README.md"
 python = "^3.12"
 django = "^5.2.1"
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
+pytest-django = "^4.11.1"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "django_app.settings"
+pythonpath = [".", "src/django_params_field"]
+python_files = ["tests.py", "test_*.py"]
 
 [build-system]
 requires = ["poetry-core"]

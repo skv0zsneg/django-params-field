@@ -1,6 +1,24 @@
 import pytest
 
+from django.core.exceptions import ValidationError
+
 from .models import ModelForTest
+
+
+@pytest.mark.django_db
+def test_model_full_clean_with_correct_value():
+    """Test model `clean()` params_field_default."""
+    test_model = ModelForTest.objects.create(params_field_default={"just": "test"})
+    # check that no exception raised
+    assert test_model.full_clean() is None
+
+
+@pytest.mark.django_db
+def test_model_full_clean_with_bas_value():
+    """Test model `clean()` params_field_default."""
+    test_model = ModelForTest.objects.create(params_field_default="I'm Not Valid!")
+    with pytest.raises(ValidationError):
+        test_model.full_clean()
 
 
 @pytest.mark.django_db

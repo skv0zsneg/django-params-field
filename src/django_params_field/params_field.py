@@ -1,29 +1,34 @@
-from typing import Any
+from typing import Any, Generic
 
+from django.core.exceptions import ValidationError
+from django.db.models import Model
 from django.db.models.fields import BinaryField
-from django.utils.translation import gettext_lazy as _
 
-from django_params_field.serializer import Serializer
+from django_params_field.serializer import P, Serializer
 
 
-class ParamsField(BinaryField):
-    description = _("Storing a set of params in one field.")
+class ParamsField(BinaryField, Generic[P]):
+    """Storing a set of params in one field."""
 
-    def __init__(self, params_type: Any | None = None, *args, **kwargs):
+    def __init__(self, params_type: P | None = None, *args, **kwargs) -> None:
         self.params_type = params_type
         self.serializer = Serializer(self.params_type)
         super().__init__(*args, **kwargs)
 
-    def deconstruct(self):
+    def deconstruct(self) -> tuple[Any, Any, Any, Any]:
         name, path, args, kwargs = super().deconstruct()
         kwargs["params_type"] = self.params_type
         return name, path, args, kwargs
 
-    def from_db_value(self, value, expression, connection) -> dict:
+    def from_db_value(self, value: bytes, expression, connection) -> P:
         return self.serializer.deserialize(value)
 
-    def to_python(self, value) -> dict:
-        return self.serializer.deserialize(value)
+    def to_python(self, value: P) -> P:
+        return value
 
     def get_db_prep_value(self, value, connection, prepared) -> bytes:
         return self.serializer.serialize(value)
+
+    def validate(self, value: P, model_instance: Model) -> None:
+        if not self.serializer.is_valid(value):
+            raise ValidationError(f"Given value '{value}' is not valid!")

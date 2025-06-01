@@ -53,4 +53,4 @@ del car.configuration["doors"]
 
 ## 🤗 Author
 
-Made with love by @skv0zsneg
+Made with love by [@skv0zsneg](https://github.com/skv0zsneg)

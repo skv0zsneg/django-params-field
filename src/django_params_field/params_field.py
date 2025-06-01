@@ -1,7 +1,6 @@
 from typing import Any, Generic
 
 from django.core.exceptions import ValidationError
-from django.db.models import Model
 from django.db.models.fields import BinaryField
 
 from django_params_field.serializer import P, Serializer
@@ -20,15 +19,15 @@ class ParamsField(BinaryField, Generic[P]):
         kwargs["params_type"] = self.params_type
         return name, path, args, kwargs
 
-    def from_db_value(self, value: bytes, expression, connection) -> P:
+    def from_db_value(self, value: bytes, *args, **kwargs) -> P:
         return self.serializer.deserialize(value)
 
     def to_python(self, value: P) -> P:
         return value
 
-    def get_db_prep_value(self, value, connection, prepared) -> bytes:
+    def get_db_prep_value(self, value: P, *args, **kwargs) -> bytes:
         return self.serializer.serialize(value)
 
-    def validate(self, value: P, model_instance: Model) -> None:
+    def validate(self, value: P, *args, **kwargs) -> None:
         if not self.serializer.is_valid(value):
             raise ValidationError(f"Given value '{value}' is not valid!")

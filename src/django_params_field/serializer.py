@@ -24,4 +24,8 @@ class Serializer(Generic[P]):
         return deserialized
 
     def is_valid(self, value: P) -> bool:
-        return any(map(lambda allowed_type: isinstance(value, allowed_type), self.ALLOWED_TYPES))
+        return any(
+            map(
+                lambda allowed_type: isinstance(value, allowed_type), self.ALLOWED_TYPES
+            )
+        )

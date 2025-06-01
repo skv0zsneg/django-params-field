@@ -1,32 +1,10 @@
 # django-params-field
 
-> ⚠️ This project under active developing.
+> ⚠️ This project under developing.
 
-### Roadmap for `0.1.0` and set to public:
-
-**Features**
-
-Base
-- [ ] `ParamsField.set` is working.
-- [ ] `ParamsField.get` is working.
-- [ ] `ParamsField.get(SomeDataclass.some_field)` is working.
-- [ ] `ParamsField.update(SomeDataclass.some_field, "some_new_field")` is working.
-- [ ] Testing for all base features.
-
-Additional
-- [ ] `ParamsField` work with nested `dataclasses`.
-- [ ] Migrations on changing `SomeDataclass` passed to `ParamsField` (?).
-- [ ] Package work for python version's 3.x -> 3.y and Django 4.x -> 5.x
-
-Project
-- [ ] Linting ALL code base.
-- [ ] Test coverage.
-- [ ] Dep bot for updating deps(?).
-- [ ] GitHub actions for testing and linting for all Python and Django version combinations.
+Django extension for storing a lot of parameters in one model field.
 
 ## 📍 Purpose
-
-This package is Django extension for storing a lot of parameters in one model field.
 
 For example you have some business logic for storing information about cars and also all car configuration (like engine volume, compression ratio, fuel tank capacity, wheelbase and another N values). You don't need to work with all this data but need to store it.
 
@@ -35,33 +13,18 @@ For example you have some business logic for storing information about cars and 
 ## 🚀 Quick start
 
 1. Install `django-params-field`.
+
+> ⚠️ Will not work until 0.1.0 version will be realized.
+
 ```
 pip install django-params-field
 ```
 
-2. In your Django model implement data structure for your params with `dataclasses`.
+3. Add `ParamField` to your model.
 
 ```python
-# car/configuration.py
-
-from dataclasses import dataclass
-
-@dataclass
-class CarConfiguration:
-    engine_volume: float | None = None
-    fuel_tank_capacity: float | None = None
-    wheelbase: float | None = None
-    # another N configuration params
-```
-
-3. Add `ParamField` to your model and pass `dataclass` params to it.
-
-```python
-# car/models.py
-
 from django.db.models import Model, CharField, DateTimeField
 from django_params_field import ParamsField
-from car.configuration import CarConfiguration
 
 class Car(Model):
     # main fields
@@ -69,7 +32,7 @@ class Car(Model):
     model = CharField()
     year = DateTimeField()
     # params field
-    configuration = ParamsField(CarConfiguration)
+    configuration = ParamsField()
 ```
 
 4. Work with it!
@@ -78,30 +41,16 @@ class Car(Model):
 car = Car.objects.get(pk=1)
 
 # set
-car_configuration = CarConfiguration(engine_volume=1.6)
-car.configuration.set(car_configuration)
-car.save()
-
-# update part
-car.configuration.update(CarConfiguration.engine_volume, 1.6)
-car.save()
-
-# get all
-car_configuration = car.configuration.get()
-assert isinstance(car_configuration, CarConfiguration)
-
-# get part
-assert car.configuration.get(CarConfiguration.engine_volume) == 1.6
+car.configuration = {"engine_volume": 1.6}
+# get
+assert car.configuration == {"engine_volume": 1.6}
+# update
+car.configuration["engine_volume"] = 1.8
+car.configuration["doors"] = 3
+# delete
+del car.configuration["doors"]
 ```
 
-## 🤔 Why not `JSONField`?
+## 🤗 Author
 
-`ParamsField` solve problems like:
-* Changing and getting part of DTO objects
-* Match Python types
-* Serialize and deserialize DTO objects "under the hood"
-* Efficient storing data in DB
-
-And some other things that `JSONField` does't provide.
-
-Also, as it clear from the name, `JSONField` is only `JSON`-like data, but using Python buitin `dataclasses` give you free to manipulate DTO like you what it.
+Made with love by @skv0zsneg

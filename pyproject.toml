@@ -1,23 +1,34 @@
-[tool.poetry]
+[project]
 name = "django-params-field"
-version = "0.1.0"
-description = "Django extension for storing a lot of parameters in one model."
-authors = ["skv0zsneg <klimentlamonov@yandex.ru>"]
+version = "0.0.1"
+description = "Django extension for storing a lot of parameters in one field."
+authors = [{ name = "skv0zsneg", email = "<klimentlamonov@yandex.ru>" }]
 readme = "README.md"
+requires-python = ">=3.12"
 
-[tool.poetry.dependencies]
-python = "^3.12"
-django = "^5.2.1"
+dependencies = ["django~=5.2.1"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 pytest-django = "^4.11.1"
+mypy = "^1.16.0"
+pytest-cov = "^6.1.1"
+pytest-xdist = "^3.7.0"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "django_app.settings"
-pythonpath = [".", "src/django_params_field"]
+pythonpath = ["src", "tests/django_app"]
 python_files = ["tests.py", "test_*.py"]
+addopts = [
+    # pytest-cov
+    "--cov=src/",
+    "--cov=tests/",
+    "--cov-report=html",
+    "--cov-fail-under=100",
+    # pytest-xdist
+    "-n=auto",
+]
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

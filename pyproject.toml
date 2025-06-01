@@ -6,14 +6,16 @@ authors = [{ name = "skv0zsneg", email = "<klimentlamonov@yandex.ru>" }]
 readme = "README.md"
 requires-python = ">=3.12"
 
-dependencies = ["django~=5.2.1"]
+dependencies = ["django>=4.2.0"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 pytest-django = "^4.11.1"
-mypy = "^1.16.0"
+mypy = "^1.15.0"
 pytest-cov = "^6.1.1"
 pytest-xdist = "^3.7.0"
+django-stubs = { extras = ["compatible-mypy"], version = "^5.2.0" }
+ruff = "^0.11.12"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "django_app.settings"

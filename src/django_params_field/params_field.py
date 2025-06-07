@@ -1,4 +1,4 @@
-from typing import Any, Generic
+from typing import Any, Generic, Optional
 
 from django.core.exceptions import ValidationError
 from django.db.models.fields import BinaryField
@@ -9,7 +9,7 @@ from django_params_field.serializer import P, Serializer
 class ParamsField(BinaryField, Generic[P]):
     """Storing a set of params in one field."""
 
-    def __init__(self, params_type: P | None = None, *args, **kwargs) -> None:
+    def __init__(self, params_type: Optional[P] = None, *args, **kwargs) -> None:
         self.params_type = params_type
         self.serializer = Serializer(self.params_type)
         super().__init__(*args, **kwargs)

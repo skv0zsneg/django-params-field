@@ -26,11 +26,11 @@ def test_set_and_get_params_field_default(dict_size):
     """Test set and get params fields different size with default ``params_type``."""
     test_model = ModelForTest.objects.create()
     simple_data_struct = {i: i for i in range(dict_size)}
-    test_model.params_field_default = simple_data_struct
+    test_model.default = simple_data_struct
     test_model.save()
 
     test_model_from_query = ModelForTest.objects.get(pk=test_model.pk)
-    assert test_model_from_query.params_field_default == simple_data_struct
+    assert test_model_from_query.default == simple_data_struct
 
 
 @pytest.mark.django_db
@@ -40,10 +40,10 @@ def test_update_params_field_default(dict_size):
     simple_data_struct = {i: i for i in range(dict_size)}
     test_model = ModelForTest.objects.create(params_field_default=simple_data_struct)
 
-    test_model.params_field_default[0] = "test-change-value"
+    test_model.default[0] = "test-change-value"
     test_model.save()
     test_model_from_query = ModelForTest.objects.get(pk=test_model.pk)
-    assert test_model_from_query.params_field_default[0] == "test-change-value"
+    assert test_model_from_query.default[0] == "test-change-value"
 
 
 @pytest.mark.django_db
@@ -53,8 +53,8 @@ def test_delete_params_field_default(dict_size):
     simple_data_struct = {i: i for i in range(dict_size)}
     test_model = ModelForTest.objects.create(params_field_default=simple_data_struct)
 
-    keys_num_before = len(test_model.params_field_default.keys())
-    del test_model.params_field_default[1]
+    keys_num_before = len(test_model.default.keys())
+    del test_model.default[1]
     test_model.save()
     test_model_from_query = ModelForTest.objects.get(pk=test_model.pk)
-    assert len(test_model_from_query.params_field_default.keys()) == keys_num_before - 1
+    assert len(test_model_from_query.default.keys()) == keys_num_before - 1

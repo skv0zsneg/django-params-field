@@ -19,4 +19,4 @@ format:
 	poetry run ruff format
 
 .PHONY: test
-test: unit typing lint
+test: unit

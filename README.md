@@ -20,7 +20,7 @@ For example you have some business logic for storing information about cars and 
 pip install django-params-field
 ```
 
-3. Add `ParamField` to your model.
+2. Add `ParamField` to your model.
 
 ```python
 from django.db.models import Model, CharField, DateTimeField
@@ -35,7 +35,7 @@ class Car(Model):
     configuration = ParamsField()
 ```
 
-4. Work with it!
+3. Work with it!
 
 ```python
 car = Car.objects.get(pk=1)
@@ -53,4 +53,4 @@ del car.configuration["doors"]
 
 ## 🤗 Author
 
-Made with love by @skv0zsneg
+Made with love by [@skv0zsneg](https://github.com/skv0zsneg)

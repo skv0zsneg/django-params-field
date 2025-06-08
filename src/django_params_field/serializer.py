@@ -1,6 +1,6 @@
 import bz2
 import pickle
-from typing import Any, ClassVar, Generic, TypeVar
+from typing import Any, ClassVar, Generic, Optional, TypeVar
 
 P = TypeVar("P")
 
@@ -10,7 +10,7 @@ class Serializer(Generic[P]):
 
     ALLOWED_TYPES: ClassVar[tuple[Any, ...]] = (dict,)
 
-    def __init__(self, params_type: P | None = None) -> None:
+    def __init__(self, params_type: Optional[P] = None) -> None:
         self.params_type = params_type
 
     def serialize(self, value: P) -> bytes:

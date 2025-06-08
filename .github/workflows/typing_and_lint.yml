@@ -1,4 +1,4 @@
-name: Test
+name: Typing & Lint
 
 on:
   push:
@@ -12,18 +12,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
       - name: Install poetry
         run: |
           curl -sSL 'https://install.python-poetry.org' | python
@@ -33,5 +29,5 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry run pip install -U pip
           poetry install
-      - name: Run tests
-        run: make test
+      - name: Run type and lint checks
+        run: make typing lint
